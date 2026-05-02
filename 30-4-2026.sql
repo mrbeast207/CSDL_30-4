@@ -91,3 +91,21 @@ JOIN courses AS c
 ON e.course_id = c.id
 LEFT JOIN teachers AS t 
 ON c.teacher_id = t.id;
+SELECT t.full_name AS Ten_GV, COUNT(c.id) AS So_Luong_Khoa_Hoc
+FROM teachers AS t
+LEFT JOIN courses AS c ON t.id = c.teacher_id
+GROUP BY t.id, t.full_name;
+SELECT c.course_name, COUNT(e.id) * c.tuition_fee AS Tong_Doanh_Thu
+FROM courses AS c
+JOIN enrollments AS e ON c.id = e.course_id
+GROUP BY c.id, c.course_name;
+SELECT s.full_name, COUNT(e.course_id) AS So_Luong_Mon
+FROM students AS s
+JOIN enrollments AS e ON s.id = e.student_id
+GROUP BY s.id, s.full_name, e.enroll_date
+HAVING COUNT(e.course_id) >= 3;
+SELECT c.course_name, AVG(e.score) AS Diem_Trung_Binh
+FROM courses AS c
+JOIN enrollments AS e ON c.id = e.course_id
+GROUP BY c.id, c.course_name
+HAVING AVG(e.score) < 5.0;
