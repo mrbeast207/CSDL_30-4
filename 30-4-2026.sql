@@ -109,3 +109,24 @@ FROM courses AS c
 JOIN enrollments AS e ON c.id = e.course_id
 GROUP BY c.id, c.course_name
 HAVING AVG(e.score) < 5.0;
+SELECT * 
+FROM students 
+WHERE date_of_birth > (SELECT date_of_birth FROM students WHERE id = 1);
+SELECT s.full_name, s.id, e.score 
+FROM students AS s
+JOIN enrollments AS e ON s.id = e.student_id
+JOIN courses AS c ON e.course_id = c.id
+WHERE c.course_name = 'Tieng Anh Giao Tiep'
+AND e.score = (
+    SELECT MAX(score) 
+    FROM enrollments 
+    JOIN courses ON enrollments.course_id = courses.id 
+    WHERE courses.course_name = 'Tieng Anh Giao Tiep'
+);
+SELECT * 
+FROM students 
+WHERE id NOT IN (SELECT DISTINCT student_id FROM enrollments);
+DELETE FROM enrollments 
+WHERE course_id = (SELECT id FROM courses WHERE course_name = 'Triet hoc');
+DELETE FROM courses 
+WHERE course_name = 'Triet hoc';
